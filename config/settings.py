@@ -21,12 +21,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = 'e$i)cguht@o&=h9imkvnlgh1=0b90$=&yu#qs95z65!r!0o!pv'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS')
+ALLOWED_HOSTS = ['127.0.0.1', 'missepitomenigeria.com', 'www.missepitomenigeria.com']
 
 
 # Application definition
@@ -140,7 +140,6 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -149,9 +148,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # FLUTTER_SECRET_KEY = os.environ.get('FLUTTER_SECRET_KEY')
 
-STRIPE_PUBLIC_KEY = os.environ.get('STRIPE_PUBLISHABLE_KEY')
-STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
+# STRIPE_PUBLIC_KEY = os.environ.get('STRIPE_PUBLISHABLE_KEY')
+# STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
 
-PAYSTACK_SECRET = os.environ.get('PAYSTACK_SECRET_KEY')
-PAYSTACK_PUBLIC = os.environ.get('PAYSTACK_PUBLIC_KEY')
+# PAYSTACK_SECRET = os.environ.get('PAYSTACK_SECRET_KEY')
+# PAYSTACK_PUBLIC = os.environ.get('PAYSTACK_PUBLIC_KEY')
 
