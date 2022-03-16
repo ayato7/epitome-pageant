@@ -10,7 +10,7 @@ from django.views.decorators.http import require_http_methods
 from django.views.generic import TemplateView
 
 from home.forms import ContactForm
-from django.core.mail import EmailMessage
+from django.core.mail import send_mail
 
 from home.models import Gallery
 from django.contrib import messages
@@ -45,7 +45,7 @@ class ContactUsView(View):
             'form':form
         }
         # name = request.POST['name']
-        email = request.POST['email']
+        email = request.POST.get('email', '')
         subject = request.POST['subject']
         message = request.POST['message']
         
@@ -61,13 +61,14 @@ class ContactUsView(View):
             messages.error(request, 'Message Body cannot be empty')
             return render(request, 'home/contact.html', context)
         #send email
-        email = EmailMessage(
+        send_mail(
             subject,
             message,
             email, 
-            settings.EMAIL_HOST_USER,
+            [settings.EMAIL_HOST_USER],
         )
-        
+        messages.success(request, 'Message Sent Successfully')
+        return redirect('contact-us')
         
 class RegisterView(View):
     def get(self, request):

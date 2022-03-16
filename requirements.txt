@@ -1,31 +1,22 @@
-# asgiref==3.4.1
-# certifi==2021.10.8
-# charset-normalizer==2.0.10
-# Django==3.2
-# idna==3.3
-# Pillow==8.3.1
-# psycopg2-binary==2.9.3
-# pytz==2021.3
-# requests==2.27.1
-# sqlparse==0.4.2
-# stripe==2.55.2
-# urllib3==1.26.8
-
-
 asgiref==3.5.0
 certifi==2021.10.8
+cffi==1.15.0
 charset-normalizer==2.0.12
+cryptography==36.0.1
 Django==3.2.12
+django-environ==0.8.1
 idna==3.3
 mysqlclient==2.1.0
+Pillow==9.0.1
+protobuf==3.19.4
+psycopg2-binary==2.9.3
+pycparser==2.21
 PyOpenGL==3.1.6
+pyOpenSSL==21.0.0
 pytz==2021.3
 requests==2.27.1
+six==1.16.0
 sqlparse==0.4.2
 stripe==2.67.0
-typing-extensions==4.1.1
-UNKNOWN==9.0.1
+typing_extensions==4.1.1
 urllib3==1.26.8
-
-
-

@@ -11,7 +11,14 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+import environ
 import os
+
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, True),
+    # ALLOWED_HOSTS=(list, [])
+)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,8 +30,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'e$i)cguht@o&=h9imkvnlgh1=0b90$=&yu#qs95z65!r!0o!pv'
 
+# environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+environ.Env.read_env()
+
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = ['127.0.0.1', 'missepitomenigeria.com', 'www.missepitomenigeria.com']
 
@@ -88,11 +98,11 @@ DATABASES = {
         'OPTIONS': {
             'sql_mode': 'traditional',
         },
-        'NAME': 'missoppn_missepitomenigeria',
-        'USER': 'missoppn_db_user',
-        'PASSWORD': '*556*missepitomenigeria',
-        'HOST': 'localhost',
-        'PORT': 3306,
+        'NAME': env('DB_NAME'),
+        'USER': env('DB_USER'),
+        'PASSWORD': env('DB_PASSWORD'),
+        'HOST': env('DB_HOST'),
+        'PORT': env('DB_PORT'),
     }
 }
 
@@ -134,11 +144,17 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
 
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
-)
+if DEBUG:
+    STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+else:
+  STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+  
+# STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
+
+# STATICFILES_DIRS = (
+#     os.path.join(BASE_DIR, 'static'),
+# )
 MEDIA_URL = '/media/'
 
 # Default primary key field type
@@ -154,3 +170,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # PAYSTACK_SECRET = os.environ.get('PAYSTACK_SECRET_KEY')
 # PAYSTACK_PUBLIC = os.environ.get('PAYSTACK_PUBLIC_KEY')
 
+#EMAIL CREDENTIALS
+# EMAIL_USE_SSL=env('EMAIL_USE_SSL')
+# EMAIL_USE_TLS=env('EMAIL_USE_TLS')
+EMAIL_USE_SSL=True
+EMAIL_USE_TLS=False
+EMAIL_HOST=env('EMAIL_HOST')
+EMAIL_HOST_USER=env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD=env('EMAIL_HOST_PASSWORD')
+EMAIL_PORT=env('EMAIL_PORT')
