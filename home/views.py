@@ -9,7 +9,7 @@ from django.views import View
 from django.views.decorators.http import require_http_methods
 from django.views.generic import TemplateView
 
-from home.forms import ContactForm
+from home.forms import ContactForm, PaymentForm
 from django.core.mail import send_mail
 
 from home.models import Gallery
@@ -72,12 +72,12 @@ class ContactUsView(View):
         
 class RegisterView(View):
     def get(self, request):
-        c_types = ContestType.objects.all()
+        c_types = ContestType.objects.filter(is_active=True)
         context = {'c_types':c_types}
         return render(request, 'home/apply.html', context)
     
     def post(self, request):
-        c_types = ContestType.objects.all()
+        c_types = ContestType.objects.filter(is_active=True)
         context = {'c_types':c_types, 'values':request.POST}
         
         name = request.POST['name']
@@ -136,25 +136,28 @@ class GalleryView(TemplateView):
     
 class AllContestantsView(View):
     def get(self, request):
-        contestants = ContestantForm.objects.all()
+        ctype = ContestType.objects.filter(is_active=True)
+        contestants = ContestantForm.objects.filter(reg_type__in=ctype)
         context = {
             'all_contestants':contestants,
+            'c_active':ctype,
         }
         return render(request, 'home/contestants/all-contestants.html', context)
 
-# class ContestantView(View):
-#     def get(self, request, pk):
-#         data = ContestantForm.objects.get(id=pk)
-#         form = PaymentForm()
-#         context = {
-#             'contestant':data,
-#             'form':form,
-#             'STRIPE_PUBLIC_KEY': settings.STRIPE_PUBLIC_KEY
-#         }
-#         return render(request, 'home/contestants/contestant-detail.html', context)
+class ContestantView(View):
+    def get(self, request, pk):
+        data = ContestantForm.objects.get(id=pk)
+        # return random[0:string_length] # Return the random string.
 
-#     def post(self, request, pk):
-#         pass
+        form = PaymentForm()
+        context = {
+            'contestant':data,
+            'form':form,    
+        }
+        return render(request, 'home/contestants/contestant-detail.html', context)
+
+    def post(self, request, pk):
+        pass
         # data = ContestantForm.objects.get(id=pk)
         # form = PaymentForm(request.POST)
         # if form.is_valid():
@@ -164,48 +167,28 @@ class AllContestantsView(View):
         #     phone = form.cleaned_data['phone']
         #     return redirect(str(process_payment(name,email,amount,phone)))
 
-class ContestantView(TemplateView):
-    template_name = "home/contestants/contestant-detail.html"
+class ContestantVotedView(View):
+    def get(self, request, pk):
+        data = ContestantForm.objects.get(id=pk)
+        
+        data.votes += 1
+        data.save()
+        
+        messages.success(request, 'Vote Successful')
+        return redirect(request.META.get('HTTP_REFERER'))
 
-    def get_context_data(self, pk, **kwargs):
-        contestant = ContestantForm.objects.get(id=pk)
-        context = super(ContestantView, self).get_context_data(**kwargs)
-        context.update({
-            "contestant": contestant,
-            "STRIPE_PUBLIC_KEY": settings.STRIPE_PUBLIC_KEY
-        })
-        return context
 
-import stripe
-stripe.api_key = "sk_test_51H2Hm2EMcQisWvWMHv6wIW0auJmBrvnxBQa3fLiL875grQLh46jq19EcXNpAHC55Iioc7X5ofccBmqEvTbsdYbuL000FqJlhO9"
 
-class CreateCheckoutSessionView(View):
-    def post(self, request, *args, **kwargs):
-        contestant_id = self.kwargs["pk"]
-        contestant = ContestantForm.objects.get(id=contestant_id)
-        print(contestant)
-        YOUR_DOMAIN = 'http://127.0.0.1:8000'
-        checkout_session = stripe.checkout.Session.create(
-            payment_method_types=['card'],
-            line_items=[
+class AllContestantsSuccessView(View):
+    def get(self, request):
+        contestants = ContestantForm.objects.all()
+        context = {
+            'all_contestants':contestants,
+        }
+        messages.success(request, 'Voting was successfully')
+        return render(request, 'home/contestants/all-contestants.html', context)
+    
 
-                {
-                    'price_data': {
-                        'currency': 'ngn',
-                        'unit_amount': contestant.amount,
-                        'product_data': {
-                            'name': contestant.name
-                        },
-                    },
-                    'quantity': 1,
-                },
-            ],
-
-            mode='payment',
-
-            success_url=YOUR_DOMAIN + '/success/',
-
-            cancel_url=YOUR_DOMAIN + '/cancel/',
-
-        )
-        return JsonResponse({'id': checkout_session.id})
+class HallOfFameView(View):
+    def get(self, request):
+        contestants = ContestantForm.objects.filter()

@@ -1,10 +1,12 @@
 import secrets
-from unicodedata import name
+# from unicodedata import name
 from django.db import models
 
 # Create your models here.
 class ContestType(models.Model):
     name = models.CharField(max_length=200)
+    is_active = models.BooleanField(default=False)
+    is_payable = models.BooleanField(default=False)
     
     def __str__(self):
         return self.name
@@ -28,8 +30,9 @@ class ContestantForm(models.Model):
     amount = models.PositiveIntegerField(default=500)
     verified = models.BooleanField(default=False)
     status = models.CharField(choices=REG_STATUS, default='PENDING', max_length=15)
-    likes = models.PositiveIntegerField(default=0)
+    # likes = models.PositiveIntegerField(default=0, null=True)
     votes = models.PositiveIntegerField(default=0)
+    year_reg = models.DateField(auto_now_add=True)
     date_reg = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateField(auto_now=True)
     
@@ -38,6 +41,9 @@ class ContestantForm(models.Model):
     
     def get_display_price(self):
         return "{0:.2f}".format(self.amount / 100)
+    
+    def yearregistered(self):
+        return self.year_reg.strftime('%Y')
     
     class Meta:
         ordering = ['-date_reg']

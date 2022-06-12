@@ -1,0 +1,250 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section id="careers-page" class="bg-fixed page-hero-section division">
+    <div class="container">	
+
+
+        <!-- PAGE HERO TEXT -->
+        <div class="row justify-content-center">	
+            <div class="col-md-10 col-xl-8">
+                <div class="hero-txt text-center white--color">
+                    <h2 class="h2-xl">Vote Your Winner</h2>	
+                </div>	
+            </div>
+        </div>
+
+
+        <!-- BREADCRUMB -->
+        <div id="breadcrumb">
+            <div class="row d-flex align-items-center">					
+                <div class="col">
+                    <div class="breadcrumb-nav">
+                        <nav aria-label="breadcrumb">
+                              <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Contestant {{contestant.name}}</li>
+                              </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div> 
+        </div>	<!-- END BREADCRUMB -->
+
+
+    </div>	   <!-- End container --> 
+</section>
+
+<section id="single-post" class="wide-80 inner-page-hero blog-page-section division">
+    <div class="container">
+         <div class="row">
+
+
+             <!-- SINGLE POST CONTENT -->
+             <div class="col-lg-10 offset-lg-1">
+                 <div class="post-content">
+
+
+                     <!-- TITLE -->
+                     <div class="single-post-title text-center">
+
+                         <!-- Title -->
+                         <h2 class="h2-sm">Miss Epitome Presents To You</h2>
+
+                         <!-- Post Tag -->
+                        <p class="post-tag">
+                            <a href="javascript:void(0)">{{contestant.name}}</a> <span>|</span> Registered on <span>|</span> {{contestant.date_reg|date:"D d M Y"}}
+                        </p>	
+
+                    </div>
+
+
+                    <!-- SINGLE POST IMAGE -->
+                     <div class="blog-post-img mt-50 mb-50 text-center">
+                        <img class="img-fluid" src="{{contestant.reg_image.url}}" style="height: 500px;" alt="blog-post-image">	
+                    </div>
+
+
+                    <!-- SINGLE POST TEXT -->
+                    <div class="single-post-txt">
+
+                        <!-- Text -->
+                        
+
+                        <!-- Small Title -->
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <h5 class="h5-lg">Total Votes- {{contestant.votes}}</h5>
+
+
+
+
+
+                                <script src="https://checkout.flutterwave.com/v3.js"></script>
+                                <form>
+                                <!-- <div>
+                                    Your order is ₦54,600
+                                </div> -->
+                                <button type="button" id="start-payment-button" onclick="makePayment()" class="btn rose--btn active">Pay Now</button>
+                                </form>
+                                <script>
+                                function makePayment() {
+                                    FlutterwaveCheckout({
+                                    public_key: "FLWPUBK_TEST-decb4a0f31a65046d02f7310d6c58063-X",
+                                    tx_ref: "'missepitome'+str(math.floor(1000000 + random.random()*9000000)),",
+                                    amount: '{{contestant.amount}}',
+                                    currency: "NGN",
+                                    payment_options: "card, banktransfer, ussd",
+                                    redirect_url: "{% url 'contestant-success' %}",
+                                    meta: {
+                                        consumer_id: '{{contestant.id}}',
+                                        consumer_mac: "92a3-912ba-1192a",
+                                    },
+                                    customer: {
+                                        email: "pay@missepitomenigeria.com",
+                                        name: "{{contestant.name}}",
+                                    },
+                                    customizations: {
+                                        title: "Voting for {{contestant.name}}",
+                                        description: "Payment for {{contestant.name}}",
+                                        logo: "https://missepitomenigeria.com/static/epitome-removebg(1).png",
+                                    },
+                                    });
+                                }
+                                </script>
+
+
+
+
+
+
+
+
+
+
+
+                                <!-- <form action="{% url 'contestant' contestant.id %}" method="post">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-primary active">Pay Now</button>
+
+                                </form> -->
+
+                            </div>
+                            <div class="col-lg-6">
+                                <h5 class="h5-lg d-flex justify-content-right">
+                                    Amount - <span>&#8358;</span> {{contestant.amount}}
+                                  
+                                    <h5 class="h5-md">-0545315567</h5>
+                                    <h5 class="h5-md">-Gurantee Trust Bank</h5>
+                                    <h5 class="h5-md">-Erewa Timenyin</h5>
+                                </h5>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                              <h5 class="h5-lg d-flex justify-content-center">
+                                <code>
+                                  *Pay The required Amount for this contestant "{{contestant.name|upper}}",
+                                  also please add the contestant name as part of the description when paying
+
+                                </code>
+                              </h5>
+                                <!-- <button class="btn rose--btn black--hover" id="checkout-button" type="button">Click To Vote</button> -->
+                                <!-- <form id="paymentForm">
+
+                                    <div class="form-group">
+                                  
+                                      <label for="email">Email Address</label>
+                                  
+                                      <input type="email" id="email-address" required />
+                                  
+                                    </div>
+                                  
+                                    <div class="form-group">
+                                  
+                                      <label for="first-name">First Name</label>
+                                  
+                                      <input type="text" id="first-name" />
+                                  
+                                    </div>
+                                  
+                                    <div class="form-group">
+                                  
+                                      <label for="last-name">Last Name</label>
+                                  
+                                      <input type="text" id="last-name" />
+                                  
+                                    </div>
+                                  
+                                    <div class="form-submit">
+                                  
+                                      <button type="submit" onclick="payWithPaystack()"> Pay </button>
+                                  
+                                    </div>
+                                  
+                                  </form> -->
+                            </div>
+                            
+                        </div>
+
+                        <!-- List -->
+                        <!-- <ul class="simple-list">
+                            
+                            <li class="list-item">
+                                <p class="p-lg">Donec dolor magna, suscipit in magna dignissim, porttitor hendrerit diam. Nunc gravida
+                                   ultrices felis eget faucibus. Praesent aliquet tempus, blandit posuere ligula varius
+                                </p>
+                            </li>
+
+                            <li class="list-item">
+                                <p class="p-lg">Fringilla risus nec, luctus mauris orci auctor euismod purus pretium purus pretium ligula
+                                   rutrum tempor mullam blandit tempor sapien and gravida donec ipsum at justo
+                                </p>
+                            </li>
+
+                            <li class="list-item">
+                                <p class="p-lg">Quaerat sodales sapien undo euismod purus blandit velna vitae auctor a congue magna tempor
+                                   sapien eget gravida laoreet turpis urna augue, viverra a augue eget, dictum tempor diam pulvinar in
+                                   cubilia laoreet augue donec
+                               </p>
+                            </li>
+
+                        </ul> -->
+
+                    </div>	<!-- END SINGLE POST TEXT -->
+
+
+                    <!-- SINGLE POST SHARE LINKS -->
+                    <div class="row post-share-links d-flex align-items-center">
+
+                        <!-- POST SHARE ICONS -->
+                        <div class="col-sm-12 col-xl-12 post-share-list text-end">
+                            <ul class="share-social-icons ico-25 theme-color text-center clearfix">						
+                              <li><a href="https://web.facebook.com/Epitomenigeria98/?_rdc=1&_rdr" class="share-ico"><span class="flaticon-facebook"></span></a></li>
+                              <li><a href="https://www.youtube.com/channel/UCtjwo_tjEH2E5nEQdPn_LYg/featured" class="share-ico"><span class="flaticon-youtube"></span></a></li>
+                                <li><a href="https://www.instagram.com/miss_epitome_nigeria/" class="share-ico"><span class="flaticon-instagram"></span></a></li>
+                                <!-- <li><a href="#" class="share-ico"><span class="flaticon-15"></span></a></li> -->
+                            </ul>
+                        </div>
+
+                    </div>	<!-- END SINGLE POST SHARE -->
+
+
+                    <!-- POST COMMENTS -->
+                    
+                    <!-- END POST COMMENTS -->
+
+
+                 </div>
+             </div>	<!-- ENDSINGLE POST CONTENT -->
+
+
+         </div>    <!-- End row -->
+     </div>    <!-- End container -->
+</section>
+    
+    
+{% endblock %}
+    

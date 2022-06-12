@@ -159,13 +159,6 @@ MEDIA_URL = '/media/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# FLUTTER_SECRET_KEY = os.environ.get('FLUTTER_SECRET_KEY')
-
-# STRIPE_PUBLIC_KEY = os.environ.get('STRIPE_PUBLISHABLE_KEY')
-# STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
-
-# PAYSTACK_SECRET = os.environ.get('PAYSTACK_SECRET_KEY')
-# PAYSTACK_PUBLIC = os.environ.get('PAYSTACK_PUBLIC_KEY')
 
 #EMAIL CREDENTIALS
 # EMAIL_USE_SSL=env('EMAIL_USE_SSL')
