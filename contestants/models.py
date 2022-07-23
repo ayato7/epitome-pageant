@@ -27,7 +27,7 @@ class ContestantForm(models.Model):
     address = models.CharField(max_length=255, null=True, blank=True)
     reg_type = models.ForeignKey(to=ContestType, on_delete=models.CASCADE)
     reg_image = models.FileField(upload_to='media/uploads/registration_images/', default='default.png', null=True, blank=True)
-    amount = models.PositiveIntegerField(default=500)
+    amount = models.PositiveIntegerField(default=100)
     verified = models.BooleanField(default=False)
     status = models.CharField(choices=REG_STATUS, default='PENDING', max_length=15)
     # likes = models.PositiveIntegerField(default=0, null=True)
